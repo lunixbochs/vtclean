@@ -52,7 +52,15 @@ func Clean(line string, color bool) string {
 					copy(out[pos:], out[pos+n:])
 					max -= n
 				case "K":
-					max = pos
+					switch m[1] {
+					case "", "0":
+						max = pos
+					case "1":
+						copy(out, out[pos:])
+						max = pos
+					case "2":
+						pos, max = 0, 0
+					}
 				}
 				if pos < 0 {
 					pos = 0
