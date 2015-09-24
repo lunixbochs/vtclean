@@ -39,6 +39,11 @@ func Clean(line string, color bool) string {
 				max -= 1
 			}
 		case '\033':
+			if strings.HasPrefix(str, "\x1b]0;") {
+				sides := strings.SplitN(str, "\a", 2)
+				liner = []rune(sides[1])
+				continue
+			}
 			if m := lineEdit.FindStringSubmatch(str); m != nil {
 				i += len(lineEdit.FindString(str))
 				n, err := strconv.Atoi(m[1])
