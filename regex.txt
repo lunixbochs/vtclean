@@ -34,3 +34,6 @@ this is the source definitions for the scary escape code regex
 \[\?1[46][hl]
 \[\*[LMP]
 \[[12][JK]
+
+# operating system commands
+\]\d*;\d*
