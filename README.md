@@ -35,7 +35,7 @@ Go example:
         line := vtclean.Clean(
             "\033[1;32mcolor, " +
             "curs\033[Aor, " +
-            "backspace\b\b\b\b\b\b\b\b\b\b\b", false)
+            "backspace\b\b\b\b\b\b\b\b\b\b\b\033[K", false)
         fmt.Println(line)
     }
 
