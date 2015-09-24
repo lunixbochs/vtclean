@@ -25,6 +25,7 @@ func Clean(line string, color bool) string {
 	pos, max := 0, 0
 	for i := 0; i < len(liner); {
 		c := liner[i]
+		str := string(liner[i:])
 		switch c {
 		case '\b':
 			pos -= 1
@@ -32,7 +33,8 @@ func Clean(line string, color bool) string {
 			copy(out[pos:max], out[pos+1:max])
 			max -= 1
 		case '\033':
-			if m := lineEdit.FindStringSubmatch(string(liner[i:])); m != nil {
+			if m := lineEdit.FindStringSubmatch(str); m != nil {
+				i += len(lineEdit.FindString(str))
 				n, err := strconv.Atoi(m[1])
 				if err != nil || n > 10000 {
 					n = 1
@@ -58,9 +60,10 @@ func Clean(line string, color bool) string {
 				if pos > max {
 					pos = max
 				}
+				continue
 			}
-			if !(color && isColor(string(liner[i:]))) {
-				skip := vt100scan(string(liner[i:]))
+			if !(color && isColor(str)) {
+				skip := vt100scan(str)
 				if skip > 0 {
 					i += skip
 					continue
