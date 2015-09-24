@@ -36,8 +36,8 @@ func Clean(line string, color bool) string {
 				}
 			} else {
 				hadColor = true
+				out = append(out, c)
 			}
-			out = append(out, c)
 		default:
 			if c == '\n' || c >= ' ' {
 				out = append(out, c)
