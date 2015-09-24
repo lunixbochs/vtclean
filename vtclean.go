@@ -3,6 +3,7 @@ package vtclean
 import (
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 // see regex.txt for a slightly separated version of this regex
@@ -29,9 +30,14 @@ func Clean(line string, color bool) string {
 		switch c {
 		case '\b':
 			pos -= 1
+			if pos < 0 {
+				pos = 0
+			}
 		case '\x7f':
-			copy(out[pos:max], out[pos+1:max])
-			max -= 1
+			if max > pos {
+				copy(out[pos:max], out[pos+1:max])
+				max -= 1
+			}
 		case '\033':
 			if m := lineEdit.FindStringSubmatch(str); m != nil {
 				i += len(lineEdit.FindString(str))
@@ -41,10 +47,9 @@ func Clean(line string, color bool) string {
 				}
 				switch m[2] {
 				case "@":
-					for j := 0; j < n; j++ {
-						out[pos+j] = ' '
-					}
-					pos += n
+					left := string(out[:pos]) + strings.Repeat(" ", n) + string(out[pos:])
+					out = []rune(left)
+					max += n
 				case "C":
 					pos += n
 				case "D":
@@ -55,7 +60,6 @@ func Clean(line string, color bool) string {
 						n = most
 					}
 					copy(out[pos:], out[pos+n:])
-					max -= n
 				case "K":
 					switch m[1] {
 					case "", "0":
@@ -64,7 +68,7 @@ func Clean(line string, color bool) string {
 						copy(out, out[pos:])
 						max = pos
 					case "2":
-						pos, max = 0, 0
+						max = 0
 					}
 				}
 				if pos < 0 {
