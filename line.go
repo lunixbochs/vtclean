@@ -22,13 +22,15 @@ func (l *lineEdit) Write(p []byte) {
 		copy(l.buf[l.pos:], p)
 	}
 	l.pos += len(p)
-	l.size += len(p)
+	if l.pos > l.size {
+		l.size = l.pos
+	}
 }
 
 func (l *lineEdit) Insert(p []byte) {
-	left := append(l.buf[:l.pos], p...)
-	l.buf = append(left, l.buf[l.pos:]...)
 	l.size += len(p)
+	p = append(p, l.buf[l.pos:]...)
+	l.buf = append(l.buf[:l.pos], p...)
 }
 
 func (l *lineEdit) Delete(n int) {
@@ -46,7 +48,7 @@ func (l *lineEdit) Clear() {
 	}
 }
 func (l *lineEdit) ClearLeft() {
-	for i := 0; i < l.pos; i++ {
+	for i := 0; i < l.pos+1; i++ {
 		l.buf[i] = ' '
 	}
 }
@@ -56,4 +58,8 @@ func (l *lineEdit) ClearRight() {
 
 func (l *lineEdit) Bytes() []byte {
 	return l.buf[:l.size]
+}
+
+func (l *lineEdit) String() string {
+	return string(l.Bytes())
 }
