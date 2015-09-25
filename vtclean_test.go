@@ -9,7 +9,8 @@ var tests = map[string]string{
 	"\x1b]0;asdjklfasdkljf\atest": "test",
 
 	// basic escape strip
-	"\033[12laaa": "aaa",
+	"\033[12laaa":    "aaa",
+	"\033[?1049laaa": "aaa",
 
 	// backspace and clear
 	"aaa\b\bb":        "aba",

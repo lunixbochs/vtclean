@@ -1,41 +1,10 @@
 this is the source definitions for the scary escape code regex
 
-# vt52
-^([A-KZ=>12<]|Y\d{2})
+# from tests in Terminal.app, this regex should cover all basic \e[ and \e] cases
+^[\[\]]([\d\?]+)?(;[\d\?]+)*.
 
-# ansi?
-\[\d+[A-D]
-\[\d+;\d+[Hf]
-#[1-68]
-\[(\d+|;)*[qm]
-\[[KJg]
-\[[0-2]K
-\[[02]J
-\([ABCEHKQRYZ0-7=]
+# some commands are captured like this
+\[[^a-zA-Z@]+.
+
+# didn't re-check this one (not included)
 [\[K]\d+;\d+
-\[[03]g
-\[\?[1-9][hl]
-\[\?1[4689][hl]
-\[1[289][hl]
-\[20[hl]
-\[[024][hl]
-
-# reports
-\[[56]n
-\[0?c
-\[2;[1248]y
-\[!p
-
-# second list
-\[([01457]|254)}
-\[\?(12;)?(25|50)[lh]
-[78DEHM]
-\[[ABCDHJKLMP]
-
-# edit commands
-\[\*[LMP]
-\[[12][JK]
-\[\d*[@ABCDEFGIJKLMPSTXZ1abcdeghilmnp]
-
-# operating system commands
-\]\d*;\d*
