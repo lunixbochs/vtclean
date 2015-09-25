@@ -7,8 +7,8 @@ import (
 )
 
 // see regex.txt for a slightly separated version of this regex
-var vt100re = regexp.MustCompile(`^\033[\[\]]([\d\?]+)?(;[\d\?]+)*(.)`)
-var vt100exc = regexp.MustCompile(`^\033\[[^a-zA-Z@]+.`)
+var vt100re = regexp.MustCompile(`^\033([\[\]]([\d\?]+)?(;[\d\?]+)*)?(.)`)
+var vt100exc = regexp.MustCompile(`^\033\[[^a-zA-Z0-9@\?]+.`)
 
 func Clean(line string, color bool) string {
 	var edit = lineEdit{buf: make([]byte, len(line))}
@@ -29,13 +29,16 @@ func Clean(line string, color bool) string {
 					continue
 				}
 			}
-			if m := vt100re.FindSubmatch(lineb[i:]); m != nil {
+			if m := vt100exc.Find(lineb[i:]); m != nil {
+				i += len(m)
+			} else if m := vt100re.FindSubmatch(lineb[i:]); m != nil {
 				i += len(m[0])
-				n, err := strconv.Atoi(string(m[1]))
+				num := string(m[2])
+				n, err := strconv.Atoi(num)
 				if err != nil || n > 10000 {
 					n = 1
 				}
-				switch m[3][0] {
+				switch m[4][0] {
 				case 'm':
 					if color {
 						hadColor = true
@@ -50,7 +53,7 @@ func Clean(line string, color bool) string {
 				case 'P':
 					edit.Delete(n)
 				case 'K':
-					switch string(m[1]) {
+					switch num {
 					case "", "0":
 						edit.ClearRight()
 					case "1":
@@ -59,8 +62,6 @@ func Clean(line string, color bool) string {
 						edit.Clear()
 					}
 				}
-			} else if m := vt100exc.Find(lineb[i:]); m != nil {
-				i += len(m)
 			} else {
 				i += 1
 			}

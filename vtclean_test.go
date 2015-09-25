@@ -8,9 +8,12 @@ var tests = map[string]string{
 	// "set title" special case
 	"\x1b]0;asdjklfasdkljf\atest": "test",
 
-	// basic escape strip
+	// basic escape
 	"\033[12laaa":    "aaa",
 	"\033[?1049laaa": "aaa",
+
+	// for the second regex
+	"a\033[!pa": "aa",
 
 	// backspace and clear
 	"aaa\b\bb":        "aba",
@@ -23,6 +26,10 @@ var tests = map[string]string{
 	"aaa\033[4D\033[2Cb": "aab",
 	"aaa\033[4D\033[1Cb": "aba",
 	"aaa\033[1Cb":        "aaab",
+
+	// vt52
+	"aaa\033D\033Db": "aba",
+	"a\033@b":        "ab",
 
 	// delete and insert
 	"aaa\b\b\033[2@": "a  aa",
