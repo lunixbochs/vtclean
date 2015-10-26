@@ -8,7 +8,7 @@ import (
 
 // see regex.txt for a slightly separated version of this regex
 var vt100re = regexp.MustCompile(`^\033([\[\]]([\d\?]+)?(;[\d\?]+)*)?(.)`)
-var vt100exc = regexp.MustCompile(`^\033\[[^a-zA-Z0-9@\?]+.`)
+var vt100exc = regexp.MustCompile(`^\033(\[[^a-zA-Z0-9@\?]+|[\(\)]).`)
 
 func Clean(line string, color bool) string {
 	var edit = lineEdit{buf: make([]byte, len(line))}
