@@ -2,6 +2,7 @@ package vtclean
 
 import (
 	"bufio"
+	"bytes"
 	"io"
 )
 
@@ -55,4 +56,32 @@ func (r *reader) Read(p []byte) (int, error) {
 		n += r.fill(p[n:])
 	}
 	return n, nil
+}
+
+type writer struct {
+	io.Writer
+	buf   []byte
+	color bool
+}
+
+func NewWriter(w io.Writer, color bool) io.Writer {
+	return &writer{Writer: w, color: color}
+}
+
+func (w *writer) Write(p []byte) (int, error) {
+	buf := append(w.buf, p...)
+	lines := bytes.Split(buf, []byte("\n"))
+	if len(lines) > 0 {
+		last := len(lines) - 1
+		w.buf = lines[last]
+		count := 0
+		for _, line := range lines[:last] {
+			n, err := w.Writer.Write([]byte(Clean(string(line), w.color) + "\n"))
+			count += n
+			if err != nil {
+				return count, err
+			}
+		}
+	}
+	return len(p), nil
 }

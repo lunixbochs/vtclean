@@ -11,6 +11,6 @@ func main() {
 	color := flag.Bool("color", false, "enable color")
 	flag.Parse()
 
-	stdin := vtclean.NewReader(os.Stdin, *color)
-	io.Copy(os.Stdout, stdin)
+	stdout := vtclean.NewWriter(os.Stdout, *color)
+	io.Copy(stdout, os.Stdin)
 }
