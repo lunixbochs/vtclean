@@ -12,5 +12,6 @@ func main() {
 	flag.Parse()
 
 	stdout := vtclean.NewWriter(os.Stdout, *color)
+	defer stdout.Close()
 	io.Copy(stdout, os.Stdin)
 }

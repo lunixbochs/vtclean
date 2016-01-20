@@ -64,7 +64,7 @@ type writer struct {
 	color bool
 }
 
-func NewWriter(w io.Writer, color bool) io.Writer {
+func NewWriter(w io.Writer, color bool) io.WriteCloser {
 	return &writer{Writer: w, color: color}
 }
 
@@ -84,4 +84,10 @@ func (w *writer) Write(p []byte) (int, error) {
 		}
 	}
 	return len(p), nil
+}
+
+func (w *writer) Close() error {
+	cl := Clean(string(w.buf), w.color)
+	_, err := w.Writer.Write([]byte(cl))
+	return err
 }
