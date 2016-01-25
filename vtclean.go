@@ -11,7 +11,7 @@ var vt100re = regexp.MustCompile(`^\033([\[\]]([\d\?]+)?(;[\d\?]+)*)?(.)`)
 var vt100exc = regexp.MustCompile(`^\033(\[[^a-zA-Z0-9@\?]+|[\(\)]).`)
 
 func Clean(line string, color bool) string {
-	var edit = lineEdit{buf: make([]byte, len(line))}
+	var edit = newLineEdit(len(line))
 	lineb := []byte(line)
 
 	hadColor := false
@@ -42,7 +42,7 @@ func Clean(line string, color bool) string {
 				case 'm':
 					if color {
 						hadColor = true
-						edit.Write(m[0])
+						edit.Vt100(m[0])
 					}
 				case '@':
 					edit.Insert(bytes.Repeat([]byte{' '}, n))
