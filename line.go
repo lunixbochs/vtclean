@@ -37,6 +37,12 @@ func (l *lineEdit) Move(x int) {
 	}
 }
 
+func (l *lineEdit) MoveAbs(x int) {
+	if x < l.size {
+		l.pos = x
+	}
+}
+
 func (l *lineEdit) Write(p []byte) {
 	c := chars(p)
 	if len(c) > 0 {

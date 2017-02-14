@@ -7,6 +7,7 @@ import (
 var tests = map[string]string{
 	// "set title" special case
 	"\x1b]0;asdjklfasdkljf\atest": "test",
+	"hi man\x1b[3Gdude": "hi dude",
 
 	// basic escape
 	"\033[12laaa":    "aaa",
