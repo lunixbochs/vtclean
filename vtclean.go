@@ -46,6 +46,8 @@ func Clean(line string, color bool) string {
 					}
 				case '@':
 					edit.Insert(bytes.Repeat([]byte{' '}, n))
+				case 'G':
+					edit.MoveAbs(n)
 				case 'C':
 					edit.Move(n)
 				case 'D':
