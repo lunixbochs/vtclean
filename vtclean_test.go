@@ -7,6 +7,7 @@ import (
 var tests = map[string]string{
 	// "set title" special case
 	"\x1b]0;asdjklfasdkljf\atest": "test",
+
 	"hi man\x1b[3Gdude": "hi dude",
 
 	// basic escape
@@ -39,6 +40,9 @@ var tests = map[string]string{
 
 	// strip color
 	"aaa \033[25;25mtest": "aaa test",
+
+	"bbb \033]4;1;rgb:38/54/71\033\\test": "bbb test",
+	"ccc \033]4;1;rgb:38/54/71test":       "ccc rgb:38/54/71test",
 }
 
 var colorTests = map[string]string{
