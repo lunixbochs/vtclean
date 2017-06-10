@@ -38,6 +38,9 @@ var tests = map[string]string{
 	"aaa\b\b\033[P":  "aa",
 	"aaa\b\b\033[4P": "a",
 
+	// carriage return
+	"aaa\rb": "baa",
+
 	// strip color
 	"aaa \033[25;25mtest": "aaa test",
 

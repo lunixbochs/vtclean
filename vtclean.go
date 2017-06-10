@@ -21,6 +21,8 @@ func Clean(line string, color bool) string {
 	for i := 0; i < len(lineb); {
 		c := lineb[i]
 		switch c {
+		case '\r':
+			edit.MoveAbs(0)
 		case '\b':
 			edit.Move(-1)
 		case '\033':
