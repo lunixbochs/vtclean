@@ -21,7 +21,7 @@ var tests = map[string]string{
 	"aaa\b\bb":        "aba",
 	"aaa\b\b\033[K":   "a",
 	"aaa\b\b\033[1K":  "  a",
-	"aaa\b\b\033[2Ka": " a ",
+	"aaa\b\b\033[2Ka": " a",
 
 	// character movement
 	"aaa\033[2Db":        "aba",

@@ -95,11 +95,21 @@ func (l *lineEdit) ClearRight() {
 }
 
 func (l *lineEdit) Bytes() []byte {
+	// Trim whitespace off the end
+	for i := l.size - 1; i >= l.pos; i-- {
+		if l.buf[i].char == ' ' {
+			l.size = i
+		} else {
+			break
+		}
+	}
+
 	length := 0
 	buf := l.buf[:l.size]
 	for _, v := range buf {
 		length += 1 + len(v.vt100)
 	}
+
 	tmp := make([]byte, 0, length)
 	for _, v := range buf {
 		tmp = append(tmp, v.vt100...)
