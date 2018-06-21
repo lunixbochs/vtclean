@@ -43,10 +43,22 @@ var tests = map[string]string{
 
 	"bbb \033]4;1;rgb:38/54/71\033\\test": "bbb test",
 	"ccc \033]4;1;rgb:38/54/71test":       "ccc rgb:38/54/71test",
+
+	// tabs
+	"aa\tbb": "aa\tbb",
+
+	// carriage return
+	"aaa\rb": "baa",
 }
 
 var colorTests = map[string]string{
 	"aaa \033[25;25mtest": "aaa \033[25;25mtest\x1b[0m",
+
+	// [0;m cases
+	// TODO: trailing [0;m should probably not be overridden with [0m
+	// TODO: when [0;m seen, may not want to append [0m to the end
+	"\033[0;m aa":                     "\033[0;m aa\033[0m",
+	"\033[32;1m$ echo foobar\033[0;m": "\033[32;1m$ echo foobar\033[0m",
 }
 
 func TestMain(t *testing.T) {
