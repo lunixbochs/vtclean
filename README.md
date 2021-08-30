@@ -5,7 +5,7 @@ vtclean
 
 Clean up raw terminal output by stripping escape sequences, optionally preserving color.
 
-Get it: `go get github.com/lunixbochs/vtclean/vtclean`
+Get it: `go install github.com/lunixbochs/vtclean/vtclean@v1.0.0`
 
 API:
 
