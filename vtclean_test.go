@@ -49,6 +49,11 @@ var tests = map[string]string{
 
 	// carriage return
 	"aaa\rb": "baa",
+
+	// hyperlink
+	"\033]8;;http://example.com\033\\This is a link\033]8;;\033\\\n": "This is a link\n",
+	// hyperlink with bell (instead of ST)
+	"\033]8;;http://example.com\aThis is a link\033]8;;\a\n": "This is a link\n",
 }
 
 var colorTests = map[string]string{
